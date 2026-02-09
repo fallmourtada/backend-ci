@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "bayetalla/backend-django"
+        DOCKER_IMAGE = "bayetalla/backend-django:latest"
     }
 
     stages {
@@ -15,7 +15,9 @@ pipeline {
 
         stage('Push to Docker Hub') {
             steps {
-                withDockerRegistry([credentialsId: 'dockerhub-cred', url: '']) {
+                withDockerRegistry(
+                    [credentialsId: 'dockerhub-cred', url: 'https://index.docker.io/v1/']
+                ) {
                     sh 'docker push $DOCKER_IMAGE'
                 }
             }
